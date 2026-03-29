@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { type Habit } from "../types/habit";
 import { calculateStreak } from "../services/streakLogic";
-import { tapAnimation, listItem } from "../utils/animations";
+import { listItem } from "../utils/animations";
 
 interface HabitCardProps {
 	habit: Habit;
@@ -26,14 +26,18 @@ export const HabitCard: React.FC<HabitCardProps> = ({
 	return (
 		<motion.div
 			layout
-			onClick={() => onEdit(habit)}
 			variants={listItem}
-			{...tapAnimation}
-			// --- ADICIONE ESTA LINHA ---
+			initial="hidden"
+			animate="visible"
+			exit={{
+				opacity: 0,
+				x: -20,
+				scale: 0.95,
+				transition: { duration: 0.2 },
+			}}
 			whileHover={{ scale: 1.01, backgroundColor: "#2a2a2a" }}
-			className="bg-[#222222] p-4 rounded-2xl mb-3 flex items-center justify-between 
-                transition-all border border-transparent hover:border-[#444] 
-                cursor-pointer group shadow-sm hover:shadow-xl"
+			onClick={() => onEdit(habit)}
+			className="bg-[#222222] p-4 rounded-2xl mb-3 flex items-center justify-between cursor-pointer border border-transparent hover:border-[#333]"
 		>
 			<div className="flex items-center gap-4">
 				<div

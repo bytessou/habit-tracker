@@ -14,6 +14,7 @@ interface AddHabitModalProps {
 		time: string,
 		type: HabitType,
 	) => void;
+	onDelete?: (id: string) => void;
 }
 
 const CATEGORIES: HabitCategory[] = [
@@ -30,6 +31,7 @@ export const AddHabitModal: React.FC<AddHabitModalProps> = ({
 	initialData, // Agora declarado corretamente
 	onClose,
 	onAdd,
+	onDelete,
 }) => {
 	const [name, setName] = useState("");
 	const [color, setColor] = useState("#fb7c64");
@@ -173,6 +175,21 @@ export const AddHabitModal: React.FC<AddHabitModalProps> = ({
 									</button>
 								))}
 							</div>
+
+							{initialData && (
+								<button
+									type="button"
+									onClick={() => {
+										// Chama a função de deletar e fecha o modal
+										onDelete?.(initialData.id);
+										onClose();
+									}}
+									className="w-full py-2 text-red-500 text-xs font-bold uppercase tracking-widest hover:bg-red-500/10 rounded-xl transition-colors mb-4"
+								>
+									Excluir Hábito
+								</button>
+							)}
+
 							<div className="flex gap-3 pt-4">
 								<button
 									type="button"

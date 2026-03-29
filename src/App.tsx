@@ -12,7 +12,8 @@ function App() {
 	const {
 		habits,
 		addHabit,
-		updateHabit, // Certifique-se de que seu hook exporta isso!
+		updateHabit,
+		deleteHabit,
 		toggleHabitDate,
 		getHabitsByDate,
 		handleExport,
@@ -81,6 +82,7 @@ function App() {
 						addHabit(n, c, cat, t, tp);
 					}
 				}}
+				onDelete={deleteHabit}
 			/>
 		</div>
 	);

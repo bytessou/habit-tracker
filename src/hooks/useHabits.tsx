@@ -8,12 +8,16 @@ import { importHabitsFromJson, exportHabitsToJson } from "../utils/fileHandler";
 const STORAGE_KEY = "@habit-tracker:v1";
 
 export const useHabits = () => {
-	const [habits, setHabits] = useState<Habit[]>([]);
-
-	useEffect(() => {
+	// Carrega direto na criação do estado para evitar sobrescrita
+	const [habits, setHabits] = useState<Habit[]>(() => {
 		const saved = localStorage.getItem(STORAGE_KEY);
-		if (saved) setHabits(JSON.parse(saved));
-	}, []);
+		try {
+			return saved ? JSON.parse(saved) : [];
+		} catch (e) {
+			console.error("Erro no parse do localStorage", e);
+			return [];
+		}
+	});
 
 	useEffect(() => {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
