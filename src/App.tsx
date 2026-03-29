@@ -1,119 +1,89 @@
-import { useState } from "react";
-// import reactLogo from "./assets/react.svg";
-// import viteLogo from "./assets/vite.svg";
-// import heroImg from "./assets/hero.png";
-import "./App.css";
+import { useState, useEffect } from "react";
+import { useHabits } from "./hooks/useHabits";
+import { HabitList } from "./components/HabitList";
+import { StatsArea } from "./components/StatsArea";
+import { AddHabitModal } from "./components/AddHabitModal";
+import { getTodayString } from "./utils/dateUtils";
+import { useNotifications } from "./hooks/useNotifications";
+import { NotificationWatcher } from "./components/NotificationWatcher";
+import { type Habit } from "./types/habit";
 
-export const App = () => {
-	const [count, setCount] = useState(0);
+function App() {
+	const {
+		habits,
+		addHabit,
+		updateHabit, // Certifique-se de que seu hook exporta isso!
+		toggleHabitDate,
+		getHabitsByDate,
+		handleExport,
+		handleImport,
+	} = useHabits();
+
+	const [selectedDate, setSelectedDate] = useState<string>(getTodayString());
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [habitToEdit, setHabitToEdit] = useState<Habit | null>(null);
+	const { requestPermission } = useNotifications();
+
+	useEffect(() => {
+		requestPermission();
+	}, [requestPermission]);
 
 	return (
-		<>
-			<section id="center">
-				<div className="hero">
-					{/* <img src={heroImg} className="base" width="170" height="179" alt="" />
-					<img src={reactLogo} className="framework" alt="React logo" />
-					<img src={viteLogo} className="vite" alt="Vite logo" /> */}
-				</div>
-				<div>
-					<h1>Get started</h1>
-					<p>
-						Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-					</p>
-				</div>
-				<button
-					className="counter"
-					onClick={() => setCount((count) => count + 1)}
-				>
-					Count is {count}
-				</button>
-			</section>
+		<div className="min-h-screen bg-[#111111] text-white p-4 md:p-10 flex items-center justify-center">
+			<main className="flex flex-col lg:flex-row gap-6 w-full max-w-[1200px]">
+				<NotificationWatcher />
 
-			<div className="ticks"></div>
+				<HabitList
+					habits={habits}
+					selectedDate={selectedDate}
+					onDateSelect={setSelectedDate}
+					onToggleHabit={(id) => toggleHabitDate(id, selectedDate)}
+					onOpenAddModal={() => {
+						setHabitToEdit(null); // Garante que é novo
+						setIsModalOpen(true);
+					}}
+					onEditHabit={(habit) => {
+						setHabitToEdit(habit);
+						setIsModalOpen(true);
+					}}
+				/>
 
-			<section id="next-steps">
-				<div id="docs">
-					<svg className="icon" role="presentation" aria-hidden="true">
-						<use href="/icons.svg#documentation-icon"></use>
-					</svg>
-					<h2>Documentation</h2>
-					<p>Your questions, answered</p>
-					<ul>
-						<li>
-							<a href="https://vite.dev/" target="_blank">
-								{/* <img className="logo" src={viteLogo} alt="" /> */}
-								Explore Vite
-							</a>
-						</li>
-						<li>
-							<a href="https://react.dev/" target="_blank">
-								{/* <img className="button-icon" src={reactLogo} alt="" /> */}
-								Learn more
-							</a>
-						</li>
-					</ul>
-				</div>
-				<div id="social">
-					<svg className="icon" role="presentation" aria-hidden="true">
-						<use href="/icons.svg#social-icon"></use>
-					</svg>
-					<h2>Connect with us</h2>
-					<p>Join the Vite community</p>
-					<ul>
-						<li>
-							<a href="https://github.com/vitejs/vite" target="_blank">
-								<svg
-									className="button-icon"
-									role="presentation"
-									aria-hidden="true"
-								>
-									<use href="/icons.svg#github-icon"></use>
-								</svg>
-								GitHub
-							</a>
-						</li>
-						<li>
-							<a href="https://chat.vite.dev/" target="_blank">
-								<svg
-									className="button-icon"
-									role="presentation"
-									aria-hidden="true"
-								>
-									<use href="/icons.svg#discord-icon"></use>
-								</svg>
-								Discord
-							</a>
-						</li>
-						<li>
-							<a href="https://x.com/vite_js" target="_blank">
-								<svg
-									className="button-icon"
-									role="presentation"
-									aria-hidden="true"
-								>
-									<use href="/icons.svg#x-icon"></use>
-								</svg>
-								X.com
-							</a>
-						</li>
-						<li>
-							<a href="https://bsky.app/profile/vite.dev" target="_blank">
-								<svg
-									className="button-icon"
-									role="presentation"
-									aria-hidden="true"
-								>
-									<use href="/icons.svg#bluesky-icon"></use>
-								</svg>
-								Bluesky
-							</a>
-						</li>
-					</ul>
-				</div>
-			</section>
+				<StatsArea
+					habits={habits}
+					selectedDate={selectedDate}
+					completedHabits={getHabitsByDate(selectedDate)}
+					onExport={handleExport}
+					onImport={(e) => {
+						const file = e.target.files?.[0];
+						if (file) handleImport(file);
+					}}
+				/>
+			</main>
 
-			<div className="ticks"></div>
-			<section id="spacer"></section>
-		</>
+			<AddHabitModal
+				isOpen={isModalOpen}
+				initialData={habitToEdit}
+				onClose={() => {
+					setIsModalOpen(false);
+					setHabitToEdit(null);
+				}}
+				onAdd={(n, c, cat, t, tp) => {
+					// 'tp' é o tipo (hábito/rotina)
+					if (habitToEdit) {
+						updateHabit(habitToEdit.id, {
+							name: n,
+							color: c,
+							category: cat,
+							reminderTime: t,
+							type: tp,
+						});
+					} else {
+						addHabit(n, c, cat, t, tp);
+					}
+				}}
+			/>
+		</div>
 	);
-};
+}
+
+export default App;

@@ -1,5 +1,14 @@
+export type HabitCategory =
+	| "Saúde"
+	| "Exercícios"
+	| "Estudos"
+	| "Finanças"
+	| "Lazer"
+	| "Outros";
+export type HabitType = "hábito" | "rotina"; // Adicionado
+
 export interface HabitLog {
-	date: string; // Data no formato YYYY-MM-DD
+	date: string;
 	completed: boolean;
 }
 
@@ -7,13 +16,9 @@ export interface Habit {
 	id: string;
 	name: string;
 	color: string;
-	reminderTime: string; // Formato HH:mm
+	category: HabitCategory;
+	type: HabitType; // Adicionado
+	reminderTime: string;
 	createdAt: string;
 	logs: HabitLog[];
-}
-
-export interface HabitStats {
-	currentStreak: number;
-	isCompletedToday: boolean;
-	lastCompletedDate: string | null;
 }
