@@ -30,10 +30,9 @@ function App() {
 	}, [requestPermission]);
 
 	return (
-		<div className="min-h-screen bg-[#111111] text-white p-4 md:p-10 flex items-center justify-center">
-			<main className="flex flex-col lg:flex-row gap-6 w-full max-w-[1200px]">
-				<NotificationWatcher />
-
+		<div className="min-h-screen lg:h-screen bg-[#111111] text-white p-4 md:p-10 flex items-center justify-center lg:overflow-hidden">
+			<NotificationWatcher />
+			<main className="flex flex-col lg:flex-row gap-6 w-full max-w-[1200px] lg:h-[85vh] items-stretch">
 				<HabitList
 					habits={habits}
 					selectedDate={selectedDate}

@@ -37,7 +37,7 @@ export const HabitCard: React.FC<HabitCardProps> = ({
 			}}
 			whileHover={{ scale: 1.01, backgroundColor: "#2a2a2a" }}
 			onClick={() => onEdit(habit)}
-			className="bg-[#222222] p-4 rounded-2xl mb-3 flex items-center justify-between cursor-pointer border border-transparent hover:border-[#333]"
+			className="bg-[#222] p-4 rounded-2xl mb-2 flex items-center justify-between transition-all cursor-pointer"
 		>
 			<div className="flex items-center gap-4">
 				<div
