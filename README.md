@@ -5,50 +5,25 @@ O **Habit Tracker** é uma ferramenta desenvolvida para auxiliar na organizaçã
 #### 🚀 Funcionalidades Principais
 
 * **Gestão de Hábitos:** Criação e monitoramento de tarefas diárias.
-* **Sistema de Streaks:** Lógica de back-end para calcular e exibir sequências de dias consecutivos (fogo/meta atingida).
+* **Sistema de Streaks:** Lógica para calcular e exibir sequências de dias consecutivos (fogo/meta atingida).
 * **Dashboard Visual:** Interface com cards coloridos e barras de progresso que facilitam a leitura do desempenho semanal.
 * **Persistência Híbrida:** Uso de **Local Storage** para garantir uma interface rápida (*optimistic UI*) antes da sincronização via Fetch API com o banco de dados.
 
 #### 🛠️ Tecnologias
 
-* **(Joel) Front-end:** React, TypeScript, Tailwind CSS, Local Storage.
-* **(Lucas) Back-end:** ASP.NET — Rotas RESTful para persistência e lógica de streaks.
+* **(Joel) Design:** Figma.
+* **(Lucas) Front-end:** React, TypeScript, Tailwind CSS, Local Storage.
 
 ---
 
 ## ⚙️ Como Executar o Projeto
 
-Para rodar este projeto localmente, você precisará ter instalado em sua máquina o **Node.js** (para o Front-end) e o **.NET SDK** (para o Back-end).
+Para rodar este projeto localmente, você precisará ter instalado em sua máquina o **Node.js**.
 
 ### 1. Clonar o Repositório
 ```bash
 git clone https://github.com/bytessou/habit-tracker.git
 cd habit-tracker
-```
-
-### 2. Configurando o Back-end (ASP.NET)
-
-**Entre na pasta do servidor:**
-```bash
-cd backend
-```
-
-**Restaure as dependências:**
-```bash
-dotnet restore
-```
-
-**Execute a aplicação:**
-```bash
-dotnet run
-```
-> O servidor estará disponível em `http://localhost:5000` (ou na porta configurada no seu `launchSettings.json`).
-
-### 3. Configurando o Front-end (React + Vite/CRA)
-
-**Entre na pasta do cliente:**
-```bash
-cd frontend
 ```
 
 **Instale as dependências:**
@@ -67,5 +42,4 @@ npm run dev
 ### 📝 Observações Técnicas
 
 * **TypeScript & Tailwind:** O projeto utiliza tipagem estática e estilização via classes utilitárias para garantir um código limpo e escalável.
-* **Conexão com a API:** Certifique-se de que a URL base no Front-end esteja apontando para a porta correta onde o ASP.NET está rodando.
-* **Persistência:** No primeiro acesso, o app utilizará o **Local Storage** do seu navegador. Após a configuração do banco de dados no Back-end, os dados serão sincronizados via Fetch.
+* **Persistência:** No primeiro acesso, o app utilizará o **Local Storage** do seu navegador.
